@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="FitathonDataModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FitathonDataModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="appsettings">
           <Key>
             <PropertyRef Name="key" />
@@ -35,7 +35,7 @@
           <Property Name="donationGoal" Type="decimal" Precision="10" Scale="0" />
           <Property Name="braintreeClientID" Type="varchar" MaxLength="100" />
           <Property Name="braintreePublicKey" Type="varchar" MaxLength="150" />
-          <Property Name="braintreePrivateKey" Type="int" />
+          <Property Name="braintreePrivateKey" Type="varchar" MaxLength="255" />
           <Property Name="settled" Type="bool" Nullable="false" />
         </EntityType>
         <EntityType Name="participant">
@@ -48,9 +48,9 @@
           <Property Name="stepsTaken" Type="int" Nullable="false" />
           <Property Name="averageDailySteps" Type="int" />
           <Property Name="fitbitAuthCode" Type="varchar" MaxLength="150" />
-          <Property Name="fitbitAccessToken" Type="varchar" MaxLength="500" Nullable="false" />
-          <Property Name="fitbitRefreshToken" Type="varchar" MaxLength="500" Nullable="false" />
-          <Property Name="uniqueID" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="fitbitAccessToken" Type="varchar" MaxLength="500" />
+          <Property Name="fitbitRefreshToken" Type="varchar" MaxLength="500" />
+          <Property Name="uniqueID" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="sponsor">
           <Key>
@@ -163,8 +163,7 @@
             <End Role="sponsor" EntitySet="sponsor" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="FitathonDataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -187,39 +186,6 @@
           <Property Name="processorTrxID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="sponsor" Relationship="Self.donation_ibfk_1" FromRole="donation" ToRole="sponsor" />
         </EntityType>
-        <EntityType Name="fitevent">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="begins" Type="DateTime" Nullable="false" />
-          <Property Name="ends" Type="DateTime" Nullable="false" />
-          <Property Name="estimatedSteps" Type="Int32" />
-          <Property Name="donationGoal" Type="Decimal" />
-          <Property Name="braintreeClientID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="braintreePublicKey" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="braintreePrivateKey" Type="Int32" />
-          <Property Name="settled" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="participants" Relationship="Self.participant_ibfk_2" FromRole="fitevent" ToRole="participant" />
-        </EntityType>
-        <EntityType Name="participant">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="userID" Type="Int32" Nullable="false" />
-          <Property Name="eventID" Type="Int32" Nullable="false" />
-          <Property Name="stepsTaken" Type="Int32" Nullable="false" />
-          <Property Name="averageDailySteps" Type="Int32" />
-          <Property Name="fitbitAuthCode" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="fitbitAccessToken" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="fitbitRefreshToken" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="uniqueID" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="fitevent" Relationship="Self.participant_ibfk_2" FromRole="participant" ToRole="fitevent" />
-          <NavigationProperty Name="user" Relationship="Self.participant_ibfk_1" FromRole="participant" ToRole="user" />
-          <NavigationProperty Name="sponsors" Relationship="Self.sponsor_ibfk_2" FromRole="participant" ToRole="sponsor" />
-        </EntityType>
         <EntityType Name="sponsor">
           <Key>
             <PropertyRef Name="id" />
@@ -233,8 +199,8 @@
           <Property Name="pledgePerSteps" Type="Int32" />
           <Property Name="donationMax" Type="Decimal" />
           <NavigationProperty Name="donations" Relationship="Self.donation_ibfk_1" FromRole="sponsor" ToRole="donation" />
-          <NavigationProperty Name="participant" Relationship="Self.sponsor_ibfk_2" FromRole="sponsor" ToRole="participant" />
           <NavigationProperty Name="user" Relationship="Self.sponsor_ibfk_1" FromRole="sponsor" ToRole="user" />
+          <NavigationProperty Name="participant" Relationship="FitathonDataModel.sponsor_ibfk_2" FromRole="sponsor" ToRole="participant" />
         </EntityType>
         <EntityType Name="user">
           <Key>
@@ -245,8 +211,8 @@
           <Property Name="email" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="passwordHash" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="passwordSalt" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="participants" Relationship="Self.participant_ibfk_1" FromRole="user" ToRole="participant" />
           <NavigationProperty Name="sponsors" Relationship="Self.sponsor_ibfk_1" FromRole="user" ToRole="sponsor" />
+          <NavigationProperty Name="participants" Relationship="FitathonDataModel.participant_ibfk_1" FromRole="user" ToRole="participant" />
         </EntityType>
         <Association Name="donation_ibfk_1">
           <End Role="sponsor" Type="Self.sponsor" Multiplicity="1" />
@@ -257,42 +223,6 @@
             </Principal>
             <Dependent Role="donation">
               <PropertyRef Name="sponsorID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="participant_ibfk_2">
-          <End Role="fitevent" Type="Self.fitevent" Multiplicity="1" />
-          <End Role="participant" Type="Self.participant" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="fitevent">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="participant">
-              <PropertyRef Name="eventID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="participant_ibfk_1">
-          <End Role="user" Type="Self.user" Multiplicity="1" />
-          <End Role="participant" Type="Self.participant" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="user">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="participant">
-              <PropertyRef Name="userID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="sponsor_ibfk_2">
-          <End Role="participant" Type="Self.participant" Multiplicity="1" />
-          <End Role="sponsor" Type="Self.sponsor" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="participant">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="sponsor">
-              <PropertyRef Name="participantID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -311,31 +241,100 @@
         <EntityContainer Name="FitathonDataEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="appsettings" EntityType="Self.appsetting" />
           <EntitySet Name="donations" EntityType="Self.donation" />
-          <EntitySet Name="fitevents" EntityType="Self.fitevent" />
-          <EntitySet Name="participants" EntityType="Self.participant" />
           <EntitySet Name="sponsors" EntityType="Self.sponsor" />
           <EntitySet Name="users" EntityType="Self.user" />
           <AssociationSet Name="donation_ibfk_1" Association="Self.donation_ibfk_1">
             <End Role="sponsor" EntitySet="sponsors" />
             <End Role="donation" EntitySet="donations" />
           </AssociationSet>
-          <AssociationSet Name="participant_ibfk_2" Association="Self.participant_ibfk_2">
-            <End Role="fitevent" EntitySet="fitevents" />
-            <End Role="participant" EntitySet="participants" />
-          </AssociationSet>
-          <AssociationSet Name="participant_ibfk_1" Association="Self.participant_ibfk_1">
-            <End Role="user" EntitySet="users" />
-            <End Role="participant" EntitySet="participants" />
-          </AssociationSet>
-          <AssociationSet Name="sponsor_ibfk_2" Association="Self.sponsor_ibfk_2">
-            <End Role="participant" EntitySet="participants" />
-            <End Role="sponsor" EntitySet="sponsors" />
-          </AssociationSet>
           <AssociationSet Name="sponsor_ibfk_1" Association="Self.sponsor_ibfk_1">
             <End Role="user" EntitySet="users" />
             <End Role="sponsor" EntitySet="sponsors" />
           </AssociationSet>
+          <EntitySet Name="fitevents" EntityType="FitathonDataModel.fitevent" />
+          <EntitySet Name="participants" EntityType="FitathonDataModel.participant" />
+          <AssociationSet Name="participant_ibfk_2" Association="FitathonDataModel.participant_ibfk_2">
+            <End Role="fitevent" EntitySet="fitevents" />
+            <End Role="participant" EntitySet="participants" />
+          </AssociationSet>
+          <AssociationSet Name="participant_ibfk_1" Association="FitathonDataModel.participant_ibfk_1">
+            <End Role="user" EntitySet="users" />
+            <End Role="participant" EntitySet="participants" />
+          </AssociationSet>
+          <AssociationSet Name="sponsor_ibfk_2" Association="FitathonDataModel.sponsor_ibfk_2">
+            <End Role="participant" EntitySet="participants" />
+            <End Role="sponsor" EntitySet="sponsors" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="fitevent">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="begins" Type="DateTime" Nullable="false" />
+          <Property Name="ends" Type="DateTime" Nullable="false" />
+          <Property Name="estimatedSteps" Type="Int32" />
+          <Property Name="donationGoal" Type="Decimal" />
+          <Property Name="braintreeClientID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="braintreePublicKey" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="braintreePrivateKey" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="settled" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="participants" Relationship="FitathonDataModel.participant_ibfk_2" FromRole="fitevent" ToRole="participant" />
+        </EntityType>
+        <EntityType Name="participant">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userID" Type="Int32" Nullable="false" />
+          <Property Name="eventID" Type="Int32" Nullable="false" />
+          <Property Name="stepsTaken" Type="Int32" Nullable="false" />
+          <Property Name="averageDailySteps" Type="Int32" />
+          <Property Name="fitbitAuthCode" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="fitbitAccessToken" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="fitbitRefreshToken" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="uniqueID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="fitevent" Relationship="FitathonDataModel.participant_ibfk_2" FromRole="participant" ToRole="fitevent" />
+          <NavigationProperty Name="user" Relationship="FitathonDataModel.participant_ibfk_1" FromRole="participant" ToRole="user" />
+          <NavigationProperty Name="sponsors" Relationship="FitathonDataModel.sponsor_ibfk_2" FromRole="participant" ToRole="sponsor" />
+        </EntityType>
+        <Association Name="participant_ibfk_2">
+          <End Type="FitathonDataModel.fitevent" Role="fitevent" Multiplicity="1" />
+          <End Type="FitathonDataModel.participant" Role="participant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fitevent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="participant">
+              <PropertyRef Name="eventID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="participant_ibfk_1">
+          <End Type="FitathonDataModel.user" Role="user" Multiplicity="1" />
+          <End Type="FitathonDataModel.participant" Role="participant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="participant">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="sponsor_ibfk_2">
+          <End Type="FitathonDataModel.participant" Role="participant" Multiplicity="1" />
+          <End Type="FitathonDataModel.sponsor" Role="sponsor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="participant">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sponsor">
+              <PropertyRef Name="participantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -362,37 +361,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="fitevents">
-            <EntityTypeMapping TypeName="FitathonDataModel.fitevent">
-              <MappingFragment StoreEntitySet="fitevent">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="begins" ColumnName="begins" />
-                <ScalarProperty Name="ends" ColumnName="ends" />
-                <ScalarProperty Name="estimatedSteps" ColumnName="estimatedSteps" />
-                <ScalarProperty Name="donationGoal" ColumnName="donationGoal" />
-                <ScalarProperty Name="braintreeClientID" ColumnName="braintreeClientID" />
-                <ScalarProperty Name="braintreePublicKey" ColumnName="braintreePublicKey" />
-                <ScalarProperty Name="braintreePrivateKey" ColumnName="braintreePrivateKey" />
-                <ScalarProperty Name="settled" ColumnName="settled" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="participants">
-            <EntityTypeMapping TypeName="FitathonDataModel.participant">
-              <MappingFragment StoreEntitySet="participant">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="userID" ColumnName="userID" />
-                <ScalarProperty Name="eventID" ColumnName="eventID" />
-                <ScalarProperty Name="stepsTaken" ColumnName="stepsTaken" />
-                <ScalarProperty Name="averageDailySteps" ColumnName="averageDailySteps" />
-                <ScalarProperty Name="fitbitAuthCode" ColumnName="fitbitAuthCode" />
-                <ScalarProperty Name="fitbitAccessToken" ColumnName="fitbitAccessToken" />
-                <ScalarProperty Name="fitbitRefreshToken" ColumnName="fitbitRefreshToken" />
-                <ScalarProperty Name="uniqueID" ColumnName="uniqueID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="sponsors">
             <EntityTypeMapping TypeName="FitathonDataModel.sponsor">
               <MappingFragment StoreEntitySet="sponsor">
@@ -415,6 +383,37 @@
                 <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="passwordHash" ColumnName="passwordHash" />
                 <ScalarProperty Name="passwordSalt" ColumnName="passwordSalt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="fitevents">
+            <EntityTypeMapping TypeName="FitathonDataModel.fitevent">
+              <MappingFragment StoreEntitySet="fitevent">
+                <ScalarProperty Name="settled" ColumnName="settled" />
+                <ScalarProperty Name="braintreePrivateKey" ColumnName="braintreePrivateKey" />
+                <ScalarProperty Name="braintreePublicKey" ColumnName="braintreePublicKey" />
+                <ScalarProperty Name="braintreeClientID" ColumnName="braintreeClientID" />
+                <ScalarProperty Name="donationGoal" ColumnName="donationGoal" />
+                <ScalarProperty Name="estimatedSteps" ColumnName="estimatedSteps" />
+                <ScalarProperty Name="ends" ColumnName="ends" />
+                <ScalarProperty Name="begins" ColumnName="begins" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="participants">
+            <EntityTypeMapping TypeName="FitathonDataModel.participant">
+              <MappingFragment StoreEntitySet="participant">
+                <ScalarProperty Name="uniqueID" ColumnName="uniqueID" />
+                <ScalarProperty Name="fitbitRefreshToken" ColumnName="fitbitRefreshToken" />
+                <ScalarProperty Name="fitbitAccessToken" ColumnName="fitbitAccessToken" />
+                <ScalarProperty Name="fitbitAuthCode" ColumnName="fitbitAuthCode" />
+                <ScalarProperty Name="averageDailySteps" ColumnName="averageDailySteps" />
+                <ScalarProperty Name="stepsTaken" ColumnName="stepsTaken" />
+                <ScalarProperty Name="eventID" ColumnName="eventID" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

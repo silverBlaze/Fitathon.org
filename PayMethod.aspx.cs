@@ -12,7 +12,25 @@ namespace Fitathon.org {
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e) {
-            Response.Redirect("ViewEvent.aspx", false);
+            try {
+                using(var ctx = new Data.FitathonDataEntities()) {
+                    var user = Common.GetUserFromEmail(ctx, Context.User.Identity.Name);
+
+                    var sponsor = user.sponsors.SingleOrDefault();
+
+                    if(user == null || sponsor == null) {
+                        Response.Redirect("~", false);
+                        return;
+                    }
+
+                    sponsor.payMethodToken = "ASDF1234"; //TODO: Collect saved payment method token from braintree
+
+                    ctx.SaveChanges();
+                    Response.Redirect("ViewEvent.aspx", false);
+                }
+            } catch(Exception ex) {
+                Response.Write("ERROR writing to database: " + ex.ToString());
+            }
         }
     }
 }

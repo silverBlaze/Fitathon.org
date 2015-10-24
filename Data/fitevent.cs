@@ -27,7 +27,7 @@ namespace Fitathon.org.Data
         public Nullable<decimal> donationGoal { get; set; }
         public string braintreeClientID { get; set; }
         public string braintreePublicKey { get; set; }
-        public Nullable<int> braintreePrivateKey { get; set; }
+        public string braintreePrivateKey { get; set; }
         public bool settled { get; set; }
     
         public virtual ICollection<participant> participants { get; set; }

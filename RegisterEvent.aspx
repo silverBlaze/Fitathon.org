@@ -3,6 +3,10 @@
 <asp:Content ID="chead" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="cbody" ContentPlaceHolderID="body" runat="server">
+
+    Name:
+    <asp:TextBox runat="server" ID="txtName" />
+    <br />
     Begins:
     <asp:TextBox runat="server" ID="txtBegins" />
     <br />

@@ -12,7 +12,38 @@ namespace Fitathon.org {
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e) {
-            Response.Redirect("PayMethod.aspx", false);
+
+            decimal amount = 0;
+            decimal max = 0;
+            int perSteps = 0;
+
+            decimal.TryParse(txtPledge.Text, out amount);
+            decimal.TryParse(txtMaxDonation.Text, out max);
+            int.TryParse(ddlPerSteps.SelectedValue, out perSteps);
+
+            try {
+                using(var ctx = new Data.FitathonDataEntities()) {
+                    var user = Common.GetUserFromEmail(ctx, Context.User.Identity.Name);
+
+                    var sponsor = user.sponsors.SingleOrDefault();
+
+                    if(user == null || sponsor == null) {
+                        Response.Redirect("~", false);
+                        return;
+                    }
+
+                    sponsor.pledgeAmount = amount;
+                    sponsor.donationMax = max;
+                    sponsor.pledgePerSteps = perSteps;
+
+                    ctx.SaveChanges();
+                    Response.Redirect("PayMethod.aspx", false);
+                }
+            } catch(Exception ex) {
+                Response.Write("ERROR writing to database: " + ex.ToString());
+            }
+
         }
+
     }
 }

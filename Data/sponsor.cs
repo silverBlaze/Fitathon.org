@@ -29,7 +29,7 @@ namespace Fitathon.org.Data
         public Nullable<decimal> donationMax { get; set; }
     
         public virtual ICollection<donation> donations { get; set; }
-        public virtual participant participant { get; set; }
         public virtual user user { get; set; }
+        public virtual participant participant { get; set; }
     }
 }

@@ -12,7 +12,29 @@ namespace Fitathon.org {
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e) {
-            Response.Redirect("FitbitSetup.aspx", false);
+
+            try {
+                using(var ctx = new Data.FitathonDataEntities()) {
+                    var user = Common.GetUserFromEmail(ctx, Context.User.Identity.Name);
+                    var part = user.participants.SingleOrDefault();
+                    var evt = part.fitevent;
+
+                    if(user == null || part == null) {
+                        Response.Redirect("~", false);
+                        return;
+                    }
+
+                    evt.braintreeClientID = txtClientId.Text;
+                    evt.braintreePublicKey = txtPublicKey.Text;
+                    evt.braintreePrivateKey = txtPrivateKey.Text;
+
+                    ctx.SaveChanges();
+                    Response.Redirect("FitbitSetup.aspx", false);
+                }
+
+            } catch(Exception ex) {
+                Response.Write("ERROR writing to database: " + ex.ToString());
+            }
         }
     }
 }

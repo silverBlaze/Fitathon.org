@@ -3,7 +3,7 @@
 </asp:Content>
 <asp:Content ID="cbody" ContentPlaceHolderID="body" runat="server">
     Pledge:
-    <asp:TextBox runat="server" ID="txtDonationGoal" /> per 
+    <asp:TextBox runat="server" ID="txtPledge" /> per 
     <asp:DropDownList ID="ddlPerSteps" runat="server">
         <asp:ListItem Text="500" Value="500" />
         <asp:ListItem Text="1000" Value="1000" />

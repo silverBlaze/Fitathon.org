@@ -16,8 +16,8 @@ namespace Fitathon.org.Data
     {
         public user()
         {
-            this.participants = new HashSet<participant>();
             this.sponsors = new HashSet<sponsor>();
+            this.participants = new HashSet<participant>();
         }
     
         public int ID { get; set; }
@@ -26,7 +26,7 @@ namespace Fitathon.org.Data
         public string passwordHash { get; set; }
         public string passwordSalt { get; set; }
     
-        public virtual ICollection<participant> participants { get; set; }
         public virtual ICollection<sponsor> sponsors { get; set; }
+        public virtual ICollection<participant> participants { get; set; }
     }
 }

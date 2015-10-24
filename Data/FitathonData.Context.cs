@@ -27,9 +27,9 @@ namespace Fitathon.org.Data
     
         public DbSet<appsetting> appsettings { get; set; }
         public DbSet<donation> donations { get; set; }
-        public DbSet<fitevent> fitevents { get; set; }
-        public DbSet<participant> participants { get; set; }
         public DbSet<sponsor> sponsors { get; set; }
         public DbSet<user> users { get; set; }
+        public DbSet<fitevent> fitevents { get; set; }
+        public DbSet<participant> participants { get; set; }
     }
 }
