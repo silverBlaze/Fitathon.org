@@ -43,11 +43,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -66,11 +73,29 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Data\fitathon.sql" />
+    <Content Include="Data\FitathonData.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>FitathonData.edmx</DependentUpon>
+      <LastGenOutput>FitathonData.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Data\FitathonData.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>FitathonData.edmx</DependentUpon>
+      <LastGenOutput>FitathonData.cs</LastGenOutput>
+    </Content>
     <Content Include="FitbitSetup.aspx" />
     <Content Include="Invite.aspx" />
     <Content Include="packages.config" />
     <Content Include="DefaultMaster.Master" />
     <Content Include="FormMaster.master" />
+    <EntityDeploy Include="Data\FitathonData.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>FitathonData.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Data\FitathonData.edmx.diagram">
+      <DependentUpon>FitathonData.edmx</DependentUpon>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -99,6 +124,39 @@
     </Compile>
     <Compile Include="About.aspx.designer.cs">
       <DependentUpon>About.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\appsetting.cs">
+      <DependentUpon>FitathonData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\donation.cs">
+      <DependentUpon>FitathonData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\FitathonData.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FitathonData.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\FitathonData.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FitathonData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\FitathonData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FitathonData.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\fitevent.cs">
+      <DependentUpon>FitathonData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\participant.cs">
+      <DependentUpon>FitathonData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\sponsor.cs">
+      <DependentUpon>FitathonData.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\user.cs">
+      <DependentUpon>FitathonData.tt</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -199,6 +257,9 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

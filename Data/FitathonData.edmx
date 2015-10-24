@@ -1,0 +1,444 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="FitathonDataModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="appsettings">
+          <Key>
+            <PropertyRef Name="key" />
+          </Key>
+          <Property Name="key" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="value" Type="varchar" MaxLength="500" Nullable="false" />
+        </EntityType>
+        <EntityType Name="donation">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sponsorID" Type="int" Nullable="false" />
+          <Property Name="amount" Type="decimal" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="charged" Type="bool" Nullable="false" />
+          <Property Name="success" Type="bool" Nullable="false" />
+          <Property Name="processorTrxID" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="fitevent">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="begins" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="ends" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="estimatedSteps" Type="int" />
+          <Property Name="donationGoal" Type="decimal" Precision="10" Scale="0" />
+          <Property Name="braintreeClientID" Type="varchar" MaxLength="100" />
+          <Property Name="braintreePublicKey" Type="varchar" MaxLength="150" />
+          <Property Name="braintreePrivateKey" Type="int" />
+          <Property Name="settled" Type="bool" Nullable="false" />
+        </EntityType>
+        <EntityType Name="participant">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userID" Type="int" Nullable="false" />
+          <Property Name="eventID" Type="int" Nullable="false" />
+          <Property Name="stepsTaken" Type="int" Nullable="false" />
+          <Property Name="averageDailySteps" Type="int" />
+          <Property Name="fitbitAuthCode" Type="varchar" MaxLength="150" />
+          <Property Name="fitbitAccessToken" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="fitbitRefreshToken" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="uniqueID" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sponsor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userID" Type="int" Nullable="false" />
+          <Property Name="participantID" Type="int" Nullable="false" />
+          <Property Name="payMethodToken" Type="varchar" MaxLength="500" />
+          <Property Name="payMethodType" Type="varchar" MaxLength="100" />
+          <Property Name="pledgeAmount" Type="decimal" Precision="10" Scale="0" />
+          <Property Name="pledgePerSteps" Type="int" />
+          <Property Name="donationMax" Type="decimal" Precision="10" Scale="0" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="passwordHash" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="passwordSalt" Type="varchar" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <Association Name="donation_ibfk_1">
+          <End Role="sponsor" Type="Self.sponsor" Multiplicity="1" />
+          <End Role="donation" Type="Self.donation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sponsor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="donation">
+              <PropertyRef Name="sponsorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="participant_ibfk_1">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="participant" Type="Self.participant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="participant">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="participant_ibfk_2">
+          <End Role="fitevent" Type="Self.fitevent" Multiplicity="1" />
+          <End Role="participant" Type="Self.participant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fitevent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="participant">
+              <PropertyRef Name="eventID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="sponsor_ibfk_1">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="sponsor" Type="Self.sponsor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="sponsor">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="sponsor_ibfk_2">
+          <End Role="participant" Type="Self.participant" Multiplicity="1" />
+          <End Role="sponsor" Type="Self.sponsor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="participant">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sponsor">
+              <PropertyRef Name="participantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FitathonDataModelStoreContainer">
+          <EntitySet Name="appsettings" EntityType="Self.appsettings" Schema="fitathon" store:Type="Tables" />
+          <EntitySet Name="donation" EntityType="Self.donation" Schema="fitathon" store:Type="Tables" />
+          <EntitySet Name="fitevent" EntityType="Self.fitevent" Schema="fitathon" store:Type="Tables" />
+          <EntitySet Name="participant" EntityType="Self.participant" Schema="fitathon" store:Type="Tables" />
+          <EntitySet Name="sponsor" EntityType="Self.sponsor" Schema="fitathon" store:Type="Tables" />
+          <EntitySet Name="user" EntityType="Self.user" Schema="fitathon" store:Type="Tables" />
+          <AssociationSet Name="donation_ibfk_1" Association="Self.donation_ibfk_1">
+            <End Role="sponsor" EntitySet="sponsor" />
+            <End Role="donation" EntitySet="donation" />
+          </AssociationSet>
+          <AssociationSet Name="participant_ibfk_1" Association="Self.participant_ibfk_1">
+            <End Role="user" EntitySet="user" />
+            <End Role="participant" EntitySet="participant" />
+          </AssociationSet>
+          <AssociationSet Name="participant_ibfk_2" Association="Self.participant_ibfk_2">
+            <End Role="fitevent" EntitySet="fitevent" />
+            <End Role="participant" EntitySet="participant" />
+          </AssociationSet>
+          <AssociationSet Name="sponsor_ibfk_1" Association="Self.sponsor_ibfk_1">
+            <End Role="user" EntitySet="user" />
+            <End Role="sponsor" EntitySet="sponsor" />
+          </AssociationSet>
+          <AssociationSet Name="sponsor_ibfk_2" Association="Self.sponsor_ibfk_2">
+            <End Role="participant" EntitySet="participant" />
+            <End Role="sponsor" EntitySet="sponsor" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FitathonDataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="appsetting">
+          <Key>
+            <PropertyRef Name="key" />
+          </Key>
+          <Property Name="key" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="value" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="donation">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sponsorID" Type="Int32" Nullable="false" />
+          <Property Name="amount" Type="Decimal" Nullable="false" />
+          <Property Name="charged" Type="Boolean" Nullable="false" />
+          <Property Name="success" Type="Boolean" Nullable="false" />
+          <Property Name="processorTrxID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="sponsor" Relationship="Self.donation_ibfk_1" FromRole="donation" ToRole="sponsor" />
+        </EntityType>
+        <EntityType Name="fitevent">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="begins" Type="DateTime" Nullable="false" />
+          <Property Name="ends" Type="DateTime" Nullable="false" />
+          <Property Name="estimatedSteps" Type="Int32" />
+          <Property Name="donationGoal" Type="Decimal" />
+          <Property Name="braintreeClientID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="braintreePublicKey" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="braintreePrivateKey" Type="Int32" />
+          <Property Name="settled" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="participants" Relationship="Self.participant_ibfk_2" FromRole="fitevent" ToRole="participant" />
+        </EntityType>
+        <EntityType Name="participant">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userID" Type="Int32" Nullable="false" />
+          <Property Name="eventID" Type="Int32" Nullable="false" />
+          <Property Name="stepsTaken" Type="Int32" Nullable="false" />
+          <Property Name="averageDailySteps" Type="Int32" />
+          <Property Name="fitbitAuthCode" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="fitbitAccessToken" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="fitbitRefreshToken" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="uniqueID" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="fitevent" Relationship="Self.participant_ibfk_2" FromRole="participant" ToRole="fitevent" />
+          <NavigationProperty Name="user" Relationship="Self.participant_ibfk_1" FromRole="participant" ToRole="user" />
+          <NavigationProperty Name="sponsors" Relationship="Self.sponsor_ibfk_2" FromRole="participant" ToRole="sponsor" />
+        </EntityType>
+        <EntityType Name="sponsor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userID" Type="Int32" Nullable="false" />
+          <Property Name="participantID" Type="Int32" Nullable="false" />
+          <Property Name="payMethodToken" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="payMethodType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="pledgeAmount" Type="Decimal" />
+          <Property Name="pledgePerSteps" Type="Int32" />
+          <Property Name="donationMax" Type="Decimal" />
+          <NavigationProperty Name="donations" Relationship="Self.donation_ibfk_1" FromRole="sponsor" ToRole="donation" />
+          <NavigationProperty Name="participant" Relationship="Self.sponsor_ibfk_2" FromRole="sponsor" ToRole="participant" />
+          <NavigationProperty Name="user" Relationship="Self.sponsor_ibfk_1" FromRole="sponsor" ToRole="user" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="passwordHash" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="passwordSalt" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="participants" Relationship="Self.participant_ibfk_1" FromRole="user" ToRole="participant" />
+          <NavigationProperty Name="sponsors" Relationship="Self.sponsor_ibfk_1" FromRole="user" ToRole="sponsor" />
+        </EntityType>
+        <Association Name="donation_ibfk_1">
+          <End Role="sponsor" Type="Self.sponsor" Multiplicity="1" />
+          <End Role="donation" Type="Self.donation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sponsor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="donation">
+              <PropertyRef Name="sponsorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="participant_ibfk_2">
+          <End Role="fitevent" Type="Self.fitevent" Multiplicity="1" />
+          <End Role="participant" Type="Self.participant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="fitevent">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="participant">
+              <PropertyRef Name="eventID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="participant_ibfk_1">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="participant" Type="Self.participant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="participant">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="sponsor_ibfk_2">
+          <End Role="participant" Type="Self.participant" Multiplicity="1" />
+          <End Role="sponsor" Type="Self.sponsor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="participant">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sponsor">
+              <PropertyRef Name="participantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="sponsor_ibfk_1">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="sponsor" Type="Self.sponsor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="sponsor">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FitathonDataEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="appsettings" EntityType="Self.appsetting" />
+          <EntitySet Name="donations" EntityType="Self.donation" />
+          <EntitySet Name="fitevents" EntityType="Self.fitevent" />
+          <EntitySet Name="participants" EntityType="Self.participant" />
+          <EntitySet Name="sponsors" EntityType="Self.sponsor" />
+          <EntitySet Name="users" EntityType="Self.user" />
+          <AssociationSet Name="donation_ibfk_1" Association="Self.donation_ibfk_1">
+            <End Role="sponsor" EntitySet="sponsors" />
+            <End Role="donation" EntitySet="donations" />
+          </AssociationSet>
+          <AssociationSet Name="participant_ibfk_2" Association="Self.participant_ibfk_2">
+            <End Role="fitevent" EntitySet="fitevents" />
+            <End Role="participant" EntitySet="participants" />
+          </AssociationSet>
+          <AssociationSet Name="participant_ibfk_1" Association="Self.participant_ibfk_1">
+            <End Role="user" EntitySet="users" />
+            <End Role="participant" EntitySet="participants" />
+          </AssociationSet>
+          <AssociationSet Name="sponsor_ibfk_2" Association="Self.sponsor_ibfk_2">
+            <End Role="participant" EntitySet="participants" />
+            <End Role="sponsor" EntitySet="sponsors" />
+          </AssociationSet>
+          <AssociationSet Name="sponsor_ibfk_1" Association="Self.sponsor_ibfk_1">
+            <End Role="user" EntitySet="users" />
+            <End Role="sponsor" EntitySet="sponsors" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FitathonDataModelStoreContainer" CdmEntityContainer="FitathonDataEntities">
+          <EntitySetMapping Name="appsettings">
+            <EntityTypeMapping TypeName="FitathonDataModel.appsetting">
+              <MappingFragment StoreEntitySet="appsettings">
+                <ScalarProperty Name="key" ColumnName="key" />
+                <ScalarProperty Name="value" ColumnName="value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="donations">
+            <EntityTypeMapping TypeName="FitathonDataModel.donation">
+              <MappingFragment StoreEntitySet="donation">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="sponsorID" ColumnName="sponsorID" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="charged" ColumnName="charged" />
+                <ScalarProperty Name="success" ColumnName="success" />
+                <ScalarProperty Name="processorTrxID" ColumnName="processorTrxID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="fitevents">
+            <EntityTypeMapping TypeName="FitathonDataModel.fitevent">
+              <MappingFragment StoreEntitySet="fitevent">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="begins" ColumnName="begins" />
+                <ScalarProperty Name="ends" ColumnName="ends" />
+                <ScalarProperty Name="estimatedSteps" ColumnName="estimatedSteps" />
+                <ScalarProperty Name="donationGoal" ColumnName="donationGoal" />
+                <ScalarProperty Name="braintreeClientID" ColumnName="braintreeClientID" />
+                <ScalarProperty Name="braintreePublicKey" ColumnName="braintreePublicKey" />
+                <ScalarProperty Name="braintreePrivateKey" ColumnName="braintreePrivateKey" />
+                <ScalarProperty Name="settled" ColumnName="settled" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="participants">
+            <EntityTypeMapping TypeName="FitathonDataModel.participant">
+              <MappingFragment StoreEntitySet="participant">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="eventID" ColumnName="eventID" />
+                <ScalarProperty Name="stepsTaken" ColumnName="stepsTaken" />
+                <ScalarProperty Name="averageDailySteps" ColumnName="averageDailySteps" />
+                <ScalarProperty Name="fitbitAuthCode" ColumnName="fitbitAuthCode" />
+                <ScalarProperty Name="fitbitAccessToken" ColumnName="fitbitAccessToken" />
+                <ScalarProperty Name="fitbitRefreshToken" ColumnName="fitbitRefreshToken" />
+                <ScalarProperty Name="uniqueID" ColumnName="uniqueID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sponsors">
+            <EntityTypeMapping TypeName="FitathonDataModel.sponsor">
+              <MappingFragment StoreEntitySet="sponsor">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="participantID" ColumnName="participantID" />
+                <ScalarProperty Name="payMethodToken" ColumnName="payMethodToken" />
+                <ScalarProperty Name="payMethodType" ColumnName="payMethodType" />
+                <ScalarProperty Name="pledgeAmount" ColumnName="pledgeAmount" />
+                <ScalarProperty Name="pledgePerSteps" ColumnName="pledgePerSteps" />
+                <ScalarProperty Name="donationMax" ColumnName="donationMax" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="FitathonDataModel.user">
+              <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="passwordHash" ColumnName="passwordHash" />
+                <ScalarProperty Name="passwordSalt" ColumnName="passwordSalt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
