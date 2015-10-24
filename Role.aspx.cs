@@ -10,5 +10,10 @@ namespace Fitathon.org {
         protected void Page_Load(object sender, EventArgs e) {
 
         }
+        
+        protected void btnSubmit_Click(object sender, EventArgs e) {
+            Session["role"] = ddlRole.SelectedValue;
+            Response.Redirect("Register.aspx", false);
+        }
     }
 }

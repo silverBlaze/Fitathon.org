@@ -2,4 +2,9 @@
 <asp:Content ID="chead" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="cbody" ContentPlaceHolderID="body" runat="server">
+    Emails to invite:
+    <asp:TextBox ID="txtInvite" runat="server" TextMode="MultiLine" Rows="8" Columns="50" />
+    <br />
+    <asp:Button ID="btnSubmit" Text="btnSubmit" runat="server" OnClick="btnSubmit_Click" />
+
 </asp:Content>
