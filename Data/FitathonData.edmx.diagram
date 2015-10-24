@@ -10,7 +10,7 @@
         <EntityTypeShape EntityType="FitathonDataModel.fitevent" Width="1.5" PointX="0.5" PointY="2.125" IsExpanded="true" />
         <EntityTypeShape EntityType="FitathonDataModel.participant" Width="1.5" PointX="3" PointY="2" IsExpanded="true" />
         <EntityTypeShape EntityType="FitathonDataModel.sponsor" Width="1.5" PointX="6.25" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="FitathonDataModel.user" Width="1.5" PointX="6.25" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitathonDataModel.user" Width="1.5" PointX="6.25" PointY="4.5" IsExpanded="true" />
         <AssociationConnector Association="FitathonDataModel.donation_ibfk_1" ManuallyRouted="false" />
         <AssociationConnector Association="FitathonDataModel.participant_ibfk_2" ManuallyRouted="false" />
         <AssociationConnector Association="FitathonDataModel.participant_ibfk_1" ManuallyRouted="false" />
