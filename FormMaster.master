@@ -1,0 +1,12 @@
+﻿<%@ Master Language="C#" MasterPageFile="~/DefaultMaster.Master" AutoEventWireup="true" CodeBehind="FormMaster.master.cs" Inherits="Fitathon.org.FormMaster" %>
+
+<asp:Content ID="cbody" ContentPlaceHolderID="head" runat="server">
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</asp:Content>
+<asp:Content ID="chead" ContentPlaceHolderID="body" runat="server">
+    <form id="frm" runat="server">
+        <asp:ContentPlaceHolder ID="body" runat="server">
+        </asp:ContentPlaceHolder>
+    </form>
+</asp:Content>
