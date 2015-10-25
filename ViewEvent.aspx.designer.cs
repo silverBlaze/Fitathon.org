@@ -13,6 +13,15 @@ namespace Fitathon.org {
     public partial class ViewEvent {
         
         /// <summary>
+        /// litUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal litUser;
+        
+        /// <summary>
         /// litEventName control.
         /// </summary>
         /// <remarks>
@@ -130,6 +139,24 @@ namespace Fitathon.org {
         protected global::System.Web.UI.WebControls.Literal litEstDonationsDuring;
         
         /// <summary>
+        /// pnlProgressBarDuringTop control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlProgressBarDuringTop;
+        
+        /// <summary>
+        /// litPercentToGoalDuring control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal litPercentToGoalDuring;
+        
+        /// <summary>
         /// litStepsDuring control.
         /// </summary>
         /// <remarks>
@@ -146,15 +173,6 @@ namespace Fitathon.org {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal litEstStepsDuring;
-        
-        /// <summary>
-        /// litPercentToGoalDuring control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal litPercentToGoalDuring;
         
         /// <summary>
         /// litTimeRemaining control.
@@ -193,13 +211,13 @@ namespace Fitathon.org {
         protected global::System.Web.UI.WebControls.Literal litRaisedAfter;
         
         /// <summary>
-        /// litStepsAfter control.
+        /// pnlProgressBarAfterTop control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal litStepsAfter;
+        protected global::System.Web.UI.WebControls.Panel pnlProgressBarAfterTop;
         
         /// <summary>
         /// litPercentToGoalAfter control.
@@ -209,6 +227,15 @@ namespace Fitathon.org {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal litPercentToGoalAfter;
+        
+        /// <summary>
+        /// litStepsAfter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal litStepsAfter;
         
         /// <summary>
         /// litSuccessMessage control.

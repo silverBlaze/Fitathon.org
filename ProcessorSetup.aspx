@@ -7,7 +7,8 @@
     <div class="cover-container">
         <div class="masthead clearfix">
             <div class="inner">
-                <h3 class="masthead-brand">Fitathon.org</h3>
+                <h3 class="masthead-brand">
+                    <img src="logo.png" />Fitathon.org</h3>
                 <nav>
                     <ul class="nav masthead-nav">
                         <li><a href="Default.aspx">Home</a></li>

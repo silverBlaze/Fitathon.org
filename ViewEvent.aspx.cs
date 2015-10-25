@@ -48,6 +48,7 @@ namespace Fitathon.org {
                     sponsors = part.sponsors != null ? part.sponsors.ToArray() : null;
                     evt = part.fitevent;
                     UpdateDisplay(user, part, evt, sponsor, sponsors, isParticipant, eventState);
+                    litUser.Text = user.name;
                 }
             }
         }
@@ -56,6 +57,8 @@ namespace Fitathon.org {
             litEventName.Text = evt.name;
             litBegins.Text = string.Format("{0:MM/dd/yy}", evt.begins);
             litEnds.Text = string.Format("{0:MM/dd/yy}", evt.ends);
+
+            decimal percent = 0;
 
             phSponsors.Visible = isParticipant;
             btnSettleEvent.Enabled = !evt.settled;
@@ -97,7 +100,9 @@ namespace Fitathon.org {
                     litEstDonationsDuring.Text = CalcEstDonations(evt, sponsors);
                     litStepsDuring.Text = part.stepsTaken.ToString();
                     litEstStepsDuring.Text = evt.estimatedSteps.ToString();
-                    litPercentToGoalDuring.Text = CalcPercentToGoal(part, evt);
+                    percent = CalcPercentToGoal(part, evt);
+                    pnlProgressBarDuringTop.Style["width"] = percent.ToString() + "%";
+                    litPercentToGoalDuring.Text = percent.ToString();
                     litTimeRemaining.Text = CalcTimeRemaining(evt);
 
                     if(isParticipant) {
@@ -109,9 +114,13 @@ namespace Fitathon.org {
                     phAfterTop.Visible = true;
                     litRaisedAfter.Text = CalcRaised(part, evt, sponsors);
                     litStepsAfter.Text = part.stepsTaken.ToString();
-                    litPercentToGoalAfter.Text = CalcPercentToGoal(part, evt);
+                    
                     litSuccessMessage.Text = GetSuccessMessage(isParticipant, part, evt, sponsors);
                     litSettlementStatus.Text = GetSettlementStatus(evt, sponsors);
+
+                    percent = CalcPercentToGoal(part, evt);
+                    pnlProgressBarAfterTop.Style["width"] = percent.ToString() + "%";
+                    litPercentToGoalAfter.Text = percent.ToString();
 
                     if(isParticipant) {
                         if(evt.settled)
@@ -130,7 +139,7 @@ namespace Fitathon.org {
                 foreach(var s in sponsors) {
                     using(var li = new HtmlGenericControl("li")) {
                         d = s.donations.SingleOrDefault();
-                        ul.InnerHtml = string.Format("{0} - {1:c} collected", s.user.name, d != null ? d.amount : 0);
+                        li.InnerHtml = string.Format("{0} - {1:c} collected", s.user.name, d != null ? d.amount : 0);
                         ul.Controls.Add(li);
                     }
                 }
@@ -193,12 +202,12 @@ namespace Fitathon.org {
             return string.Format("{0:c}", raised);
         }
 
-        private string CalcPercentToGoal(Data.participant part, Data.fitevent evt) {
+        private decimal CalcPercentToGoal(Data.participant part, Data.fitevent evt) {
             if(evt.estimatedSteps.HasValue) {
                 decimal percent = ((decimal)part.stepsTaken / (decimal)evt.estimatedSteps.Value) * 100;
-                return Math.Round(percent).ToString();
+                return Math.Round(percent);
             }
-            return "0";
+            return 0;
         }
 
         //sum up the maximum donations for an entire event
