@@ -23,6 +23,12 @@
             width: 25px;
             margin: 10px;
         }
+        body {
+            background-image: url(bg.jpg) !important;
+        }
+        .site-wrapper {
+            background-color: rgba(0,0,0,.75);
+        }
     </style>
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <asp:ContentPlaceHolder ID="head" runat="server">

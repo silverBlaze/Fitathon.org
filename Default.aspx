@@ -20,8 +20,12 @@
         </div>
     </div>
     <div class="container">
-        <h1 class="cover-heading">Fitathon.org</h1>
-        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis volutpat, sapien ac efficitur molestie, felis dolor accumsan tellus, nec dictum dolor diam ac purus. Nulla facilisi. Suspendisse nibh mi, aliquam quis elementum ac, posuere id sem. Sed fermentum commodo lobortis. Quisque et scelerisque nisi, quis sollicitudin tellus. Duis sed lacus sapien.</p>
+        <h1 class="cover-heading">Fitathon.org<br /><small>The Digital Walkathon Platform</small></h1>
+        
+        <p class="lead">Fitathon.org is a platform where non-for-profit organizations can raise funds 
+            by planning a digital walkathon. By integrating Fitbit devices and Braintree's
+            innovative payment platform, participants from any location can walk to raise 
+            funds from sponsors' saved credit cards or PayPal accounts.</p>
         <p class="lead">
             <asp:LinkButton ID="btnLearnMore" CssClass="btn btn-lg btn-primary" Text="Learn More" runat="server" OnClick="btnLearnMore_Click" />
         </p>
