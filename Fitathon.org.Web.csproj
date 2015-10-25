@@ -85,6 +85,7 @@
       <LastGenOutput>FitathonData.cs</LastGenOutput>
     </Content>
     <Content Include="FitbitSetup.aspx" />
+    <Content Include="Fitbit\Callback.aspx" />
     <Content Include="Invite.aspx" />
     <Content Include="packages.config" />
     <Content Include="DefaultMaster.Master" />
@@ -179,6 +180,13 @@
     </Compile>
     <Compile Include="FitbitSetup.aspx.designer.cs">
       <DependentUpon>FitbitSetup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Fitbit\Callback.aspx.cs">
+      <DependentUpon>Callback.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Fitbit\Callback.aspx.designer.cs">
+      <DependentUpon>Callback.aspx</DependentUpon>
     </Compile>
     <Compile Include="FormMaster.master.cs">
       <DependentUpon>FormMaster.master</DependentUpon>

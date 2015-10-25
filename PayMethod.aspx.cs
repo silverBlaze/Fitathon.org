@@ -15,7 +15,6 @@ namespace Fitathon.org {
             try {
                 using(var ctx = new Data.FitathonDataEntities()) {
                     var user = Common.GetUserFromEmail(ctx, Context.User.Identity.Name);
-
                     var sponsor = user.sponsors.SingleOrDefault();
 
                     if(user == null || sponsor == null) {
