@@ -18,7 +18,6 @@ namespace Fitathon.org.Fitbit {
 
             string uniqueId = Request.QueryString["state"];
             string code = Request.QueryString["code"];
-            long userId = 0;
 
             //Find user with key/token that matches the "state" returned in callback
             using(var ctx = new Data.FitathonDataEntities()) {
@@ -33,7 +32,7 @@ namespace Fitathon.org.Fitbit {
                 part.fitbitAuthCode = code;
 
                 ctx.SaveChanges();
-                if(Common.RetrieveFitbitAccessTokens(userId, false)) {
+                if(Common.LoadTokensForParticipant(part.id, false)) {
                     if(part.sponsors != null && part.sponsors.Count > 0)
                         Response.Redirect("~/ViewEvent.aspx", false);
                     else

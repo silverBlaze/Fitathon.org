@@ -7,6 +7,8 @@ using Fitathon.org.Data;
 using System.Net;
 using System.Web.Script.Serialization;
 using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 
 namespace Fitathon.org {
     public class Common {
@@ -14,9 +16,7 @@ namespace Fitathon.org {
         const string FITBIT_AUTH_URI = "https://www.fitbit.com/oauth2/authorize";
         const string FITBIT_TOKEN_URI = "https://api.fitbit.com/oauth2/token";
         const string FITBIT_CALLBACK_URI = "http://fitathon.org/Fitbit/Callback.aspx";
-        //const string FITBIT_CALLBACK_URI = "http://localhost:49292/Fitbit/Callback.aspx";
-
-        const string FITBIT_ALL_SCOPE = "activity nutrition heartrate location nutrition profile settings sleep social weight";
+        
         const string FITBIT_LTD_SCOPE = "activity";
 
         static internal Data.user GetUserFromEmail(string email) {
@@ -67,18 +67,20 @@ namespace Fitathon.org {
             HttpContext.Current.Response.Redirect(url);
         }
 
-        public static bool RetrieveFitbitAccessTokens(long userId, bool refresh) {
+        public static bool LoadTokensForParticipant(int participantId, bool refresh) {
             try {
                 using(var ctx = new Data.FitathonDataEntities()) {
-                    var user = Common.GetUserFromEmail(ctx, HttpContext.Current.User.Identity.Name);
-                    var part = user.participants.SingleOrDefault();
-                    string clientId = GetFitbitClientId();
-                    string clientSecret = GetFitbitClientSecret();
+                    var part = (from parts in ctx.participants
+                                where parts.id == participantId
+                                select parts).SingleOrDefault();
 
-                    if(user == null || part == null || string.IsNullOrEmpty(part.fitbitAuthCode)) {
+                    if(part == null || string.IsNullOrEmpty(part.fitbitAuthCode)) {
                         HttpContext.Current.Response.Redirect("~", false);
                         return false;
                     }
+
+                    string clientId = GetFitbitClientId();
+                    string clientSecret = GetFitbitClientSecret();
 
                     var authHeaderVal = GetBase64(string.Format("{0}:{1}", clientId, clientSecret));
                     string url;
@@ -120,15 +122,6 @@ namespace Fitathon.org {
         private static object GetBase64(string p) {
             var bytes = System.Text.Encoding.ASCII.GetBytes(p);
             return Convert.ToBase64String(bytes);
-        }
-
-        private class FitbitTokenResponse {
-            public string access_token = null;
-            public int expires_in = 0;
-            public string refresh_token = null;
-            public string token_type = null;
-            public string user_id = null;
-            public string scope = null;
         }
 
         internal static Data.user GetUserFromLogin(string email, string password) {
@@ -180,5 +173,76 @@ namespace Fitathon.org {
             } catch { }
             return p;
         }
+
+        internal static int GetTodaysSteps(int participantId) {
+
+            try {
+                using(var ctx = new Data.FitathonDataEntities()) {
+                    var part = (from parts in ctx.participants
+                                where parts.id == participantId
+                                select parts).SingleOrDefault();
+
+                    if(part == null || string.IsNullOrEmpty(part.fitbitAuthCode)) {
+                        return -1;
+                    }
+                    LoadTokensForParticipant(part.id, true); //refresh access token
+                }
+
+                //dispose of context to reload participant data, post token refresh
+
+                using(var ctx = new Data.FitathonDataEntities()) {
+                    var part = (from parts in ctx.participants
+                                where parts.id == participantId
+                                select parts).SingleOrDefault();
+                    var url = "https://api.fitbit.com/1/user/-/activities/steps/date/today/1d.json";
+
+                    var cli = new WebClient();
+                    var req = WebRequest.Create(url);
+                    req.Method = "GET";
+                    req.Headers.Add("Authorization", string.Format("Bearer {0}", part.fitbitAccessToken));
+                    req.ContentType = "application/x-www-form-urlencoded";
+
+                    var resp = req.GetResponse();
+                    using(var s = resp.GetResponseStream()) {
+                        ActivitiesStepsCollection collection;
+                        DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(ActivitiesStepsCollection));
+                        collection = (ActivitiesStepsCollection)serializer.ReadObject(s);
+                        var steps = collection.Steps.SingleOrDefault();
+                        if(steps != null)
+                            return steps.Value;
+                    }
+
+                    return -1;
+                }
+            } catch (Exception ex) {
+                //HttpContext.Current.Response.Write(ex.ToString());
+                return -1;
+            }
+        }
+
+        [DataContract]
+        private class ActivitiesStepsCollection {
+            [DataMember(Name = "activities-steps")]
+            public IEnumerable<ActivitiesStepsItem> Steps { get; set; }
+        }
+        
+        [DataContract]
+        private class ActivitiesStepsItem {
+            [DataMember(Name = "dateTime")]
+            public string Date { get; set; }
+            [DataMember(Name = "value")]
+            public int Value { get; set; }
+        }
+
+        private class FitbitTokenResponse {
+            public string access_token = null;
+            public int expires_in = 0;
+            public string refresh_token = null;
+            public string token_type = null;
+            public string user_id = null;
+            public string scope = null;
+        }
+
     }
 }
+ 
