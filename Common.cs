@@ -9,6 +9,7 @@ using System.Web.Script.Serialization;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
+using System.Net.Mail;
 
 namespace Fitathon.org {
     public class Common {
@@ -218,6 +219,16 @@ namespace Fitathon.org {
                 //HttpContext.Current.Response.Write(ex.ToString());
                 return -1;
             }
+        }
+
+        internal static void SendEmail(string from, string to, string subject, string body) {
+            SmtpClient client = new SmtpClient("mail.wells.solutions");
+            client.Credentials = new NetworkCredential("sender", "5329735");
+            var msg = new MailMessage(from, to);
+            msg.Subject = subject;
+            msg.Body = body;
+            msg.IsBodyHtml = true;
+            client.Send(msg);
         }
 
         [DataContract]

@@ -119,6 +119,7 @@
     <Content Include="RegisterEvent.aspx" />
     <Content Include="Role.aspx" />
     <Content Include="TestGetTodaysSteps.aspx" />
+    <Content Include="TestSendMail.aspx" />
     <Content Include="ViewEvent.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -265,6 +266,13 @@
     </Compile>
     <Compile Include="TestGetTodaysSteps.aspx.designer.cs">
       <DependentUpon>TestGetTodaysSteps.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TestSendMail.aspx.cs">
+      <DependentUpon>TestSendMail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TestSendMail.aspx.designer.cs">
+      <DependentUpon>TestSendMail.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewEvent.aspx.cs">
       <DependentUpon>ViewEvent.aspx</DependentUpon>
