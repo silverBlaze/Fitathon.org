@@ -77,7 +77,6 @@ namespace Fitathon.org {
                     }
 
                 } else if(Session["role"].ToString() == "solowalker") {
-
                     //store data in session to put in db after registerevent
                     Session["regName"] = txtName.Text;
                     Session["regEmail"] = txtEmail.Text;

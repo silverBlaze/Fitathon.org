@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.UI.WebControls;
 using Fitathon.org.Data;
 
 namespace Fitathon.org {
@@ -14,6 +15,20 @@ namespace Fitathon.org {
                 try {
                     u = (from users in ctx.users
                          where users.email == email
+                         select users).SingleOrDefault();
+
+                } catch { }
+            }
+            return u;
+        }
+
+        internal static object GetUserFromLogin(string email, string password) {
+            Data.user u = null;
+            using(var ctx = new Data.FitathonDataEntities()) {
+                try {
+                    u = (from users in ctx.users
+                         where users.email == email
+                         && users.passwordHash == password
                          select users).SingleOrDefault();
 
                 } catch { }

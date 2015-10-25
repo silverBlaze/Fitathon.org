@@ -13,8 +13,15 @@ namespace Fitathon.org {
         }
 
         protected void btnLogin_Click(object sender, EventArgs e) {
+            var u = Common.GetUserFromLogin(txtEmail.Text, txtPassword.Text);
+
+            if(u == null) {
+                Response.Write("ERROR: User or password incorrect");
+                return;
+            }
+
             FormsAuthentication.SetAuthCookie(txtEmail.Text, false);
-            Response.Redirect("EventView.aspx", false);
+            Response.Redirect("ViewEvent.aspx", false);
         }
     }
 }
