@@ -29,17 +29,20 @@ namespace Fitathon.org.Fitbit {
                     return;
                 }
 
-                //link the authorization code to the 
+                //link the authorization code to the participant
                 part.fitbitAuthCode = code;
 
                 ctx.SaveChanges();
+                if(Common.RetrieveFitbitAccessTokens(userId, false)) {
+                    if(part.sponsors != null && part.sponsors.Count > 0)
+                        Response.Redirect("~/ViewEvent.aspx", false);
+                    else
+                        Response.Redirect("~/Invite.aspx", false);
+                } else {
+                    Response.Redirect("~", false);
+                }
             }
 
-            if(Common.RetrieveFitbitAccessTokens(userId, false)) {
-                Response.Redirect("~/Invite.aspx", false);
-            } else {
-                Response.Redirect("~", false);
-            }
         }
     }
 }

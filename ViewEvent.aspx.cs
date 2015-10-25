@@ -9,10 +9,10 @@ using System.Web.UI.HtmlControls;
 namespace Fitathon.org {
     public partial class ViewEvent : System.Web.UI.Page {
         protected void Page_Load(object sender, EventArgs e) {
-
-
-            bool isParticipant;
+            bool isParticipant, isSponsor;
             EventState eventState;
+            Data.sponsor sponsor = null;
+            Data.sponsor[] sponsors = null;
 
             var email = Context.User.Identity.Name;
             using(var ctx = new Data.FitathonDataEntities()) {
@@ -21,12 +21,23 @@ namespace Fitathon.org {
                             select u).SingleOrDefault();
 
                 if(user != null) {
-                    isParticipant = (user.participants != null && user.participants.Count > 0);
+                    isSponsor = (user.sponsors != null && user.sponsors.Count > 0);
+                    isParticipant = !isSponsor; //(user.participants != null && user.participants.Count > 0);
+
+                    if(isSponsor) {
+                        //make sure has paymethod and pledge
+                        sponsor = user.sponsors.SingleOrDefault();
+                        if(sponsor.pledgeAmount == null) {
+                            Response.Redirect("Pledge.aspx", false);
+                            return;
+                        } else if(sponsor.payMethodToken == null) {
+                            Response.Redirect("PayMethod.aspx", false);
+                        }
+                    }
+
                     eventState = GetEventState(user);
                     Data.participant part;
                     Data.fitevent evt;
-                    Data.sponsor sponsor = null;
-                    Data.sponsor[] sponsors = null;
                     if(isParticipant) {
                         part = user.participants.SingleOrDefault();
                     } else {
@@ -38,7 +49,6 @@ namespace Fitathon.org {
                     UpdateDisplay(user, part, evt, sponsor, sponsors, isParticipant, eventState);
                 }
             }
-
         }
 
         private void UpdateDisplay(Data.user user, Data.participant part, Data.fitevent evt, Data.sponsor sponsor, Data.sponsor[] sponsors, bool isParticipant, EventState eventState) {

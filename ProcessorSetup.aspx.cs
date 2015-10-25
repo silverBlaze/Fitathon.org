@@ -29,7 +29,11 @@ namespace Fitathon.org {
                     evt.braintreePrivateKey = txtPrivateKey.Text;
 
                     ctx.SaveChanges();
-                    Response.Redirect("FitbitSetup.aspx", false);
+
+                    if(part.fitbitAccessToken != null)
+                        Response.Redirect("ViewEvent.aspx", false);
+                    else
+                        Response.Redirect("FitbitSetup.aspx", false);
                 }
 
             } catch(Exception ex) {
