@@ -30,4 +30,25 @@
             <button type="button" class="btn btn-lg btn-primary btn-block" onclick="$('#btnLogin').click();">Log in</button>
         </div>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            document.phase = 0;
+            $('#wand').click(function () {
+                if (document.phase == 0) {
+                    $('#txtEmail').val('jdoe436641@gmail.com');
+                    $('#txtPassword').val('asdf');
+                    document.phase = 1;
+                } else if (document.phase == 1) {
+                    $('#txtEmail').val('asdf@asdf.com');
+                    $('#txtPassword').val('asdf');
+                    document.phase = 2;
+                } else if (document.phase == 2) {
+                    $('#txtName').val('Jane Doe');
+                    $('#txtEmail').val('fdsa@asdf.com');
+                    $('#txtPassword').val('asdf');
+                    document.phase = 0;
+                }
+            });
+        });
+    </script>
 </asp:Content>

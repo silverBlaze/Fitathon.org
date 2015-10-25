@@ -34,4 +34,13 @@
             <button type="button" class="btn btn-lg btn-primary btn-block" onclick="$('#btnSubmit').click();">Continue</button>
         </div>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#wand').click(function () {
+                $('#txtClientId').val('92jhfhs79bxhprwd');
+                $('#txtPublicKey').val('vhrjkq5v53gfr6hg');
+                $('#txtPrivateKey').val('e0052decde607c0c74c79c4cddcff270');
+            });
+        });
+    </script>
 </asp:Content>

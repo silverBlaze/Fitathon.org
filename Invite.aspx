@@ -30,4 +30,11 @@
             <button type="button" class="btn btn-lg btn-primary btn-block" onclick="$('#btnSubmit').click();">Continue</button>
         </div>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#wand').click(function () {
+                $('#txtInvite').val('jason@wells.solutions');
+            });
+        });
+    </script>
 </asp:Content>

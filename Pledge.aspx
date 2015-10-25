@@ -32,4 +32,13 @@
             <button type="button" class="btn btn-lg btn-primary btn-block" onclick="$('#btnSubmit').click();">Continue</button>
         </div>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#wand').click(function () {
+                $('#txtPledge').val('1.00');
+                $('#txtPerSteps').val('1000');
+                $('#txtMaxDonation').val('20.00');
+            });
+        });
+    </script>
 </asp:Content>

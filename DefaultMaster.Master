@@ -15,7 +15,16 @@
             height: 90px;
             width: 90px;
         }
+        .wand {
+            position: absolute;
+            left:0;
+            bottom:0;
+            height: 25px;
+            width: 25px;
+            margin: 10px;
+        }
     </style>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
@@ -33,9 +42,9 @@
             </div>
 
         </div>
-
+        
+        <img id="wand" class="wand" src="wand.png" />
     </div>
-    <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
     <script>

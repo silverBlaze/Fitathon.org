@@ -41,4 +41,22 @@
             <asp:PlaceHolder ID="phParticipant" runat="server"></asp:PlaceHolder>
         </div>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            document.phase = 0;
+            $('#wand').click(function () {
+                if (document.phase == 0) {
+                    $('#txtName').val('John Doe');
+                    $('#txtEmail').val('jdoe436641@gmail.com');
+                    $('#txtPassword').val('asdf');
+                    document.phase = 1;
+                } else {
+                    $('#txtName').val('Jane Doe');
+                    $('#txtEmail').val('asdf@asdf.com');
+                    $('#txtPassword').val('asdf');
+                    document.phase = 0;
+                }
+            });
+        });
+    </script>
 </asp:Content>

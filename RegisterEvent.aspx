@@ -37,4 +37,15 @@
             <button type="button" class="btn btn-lg btn-primary btn-block" onclick="$('#btnSubmit').click();">Continue</button>
         </div>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#wand').click(function () {
+                $('#txtName').val('Troop #848 Walkathon');
+                $('#txtBegins').val('11/1/15');
+                $('#txtEnds').val('11/2/15');
+                $('#txtEstimatedSteps').val('20000');
+                $('#txtDonationGoal').val('250.00');
+            });
+        });
+    </script>
 </asp:Content>
