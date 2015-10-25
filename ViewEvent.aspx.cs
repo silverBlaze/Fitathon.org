@@ -27,11 +27,12 @@ namespace Fitathon.org {
                     if(isSponsor) {
                         //make sure has paymethod and pledge
                         sponsor = user.sponsors.SingleOrDefault();
-                        if(sponsor.pledgeAmount == null) {
+                        if(sponsor.pledgeAmount == null || sponsor.pledgeAmount.Value == 0) {
                             Response.Redirect("Pledge.aspx", false);
                             return;
                         } else if(sponsor.payMethodToken == null) {
                             Response.Redirect("PayMethod.aspx", false);
+                            return;
                         }
                     }
 
@@ -234,7 +235,7 @@ namespace Fitathon.org {
             int tempSteps = 0;
             if(sponsors.Length > 0) {
                 foreach(var s in sponsors) {
-                    if(s.donationMax.HasValue && s.pledgeAmount.HasValue && s.pledgePerSteps.HasValue) {
+                    if(s.donationMax.HasValue && s.pledgeAmount.HasValue && s.pledgeAmount.Value != 0 && s.pledgePerSteps.HasValue) {
                         if(maxSteps == 0)
                             maxSteps = (int)((s.donationMax.Value / s.pledgeAmount.Value) * s.pledgePerSteps.Value);
                         tempSteps = (int)((s.donationMax.Value / s.pledgeAmount.Value) * s.pledgePerSteps.Value);

@@ -60,6 +60,7 @@
           <Property Name="userID" Type="int" Nullable="false" />
           <Property Name="participantID" Type="int" Nullable="false" />
           <Property Name="payMethodToken" Type="varchar" MaxLength="500" />
+          <Property Name="payMethodCustomerId" Type="varchar" MaxLength="150" />
           <Property Name="payMethodType" Type="varchar" MaxLength="100" />
           <Property Name="pledgeAmount" Type="decimal" Precision="10" Scale="0" />
           <Property Name="pledgePerSteps" Type="int" />
@@ -184,23 +185,7 @@
           <Property Name="charged" Type="Boolean" Nullable="false" />
           <Property Name="success" Type="Boolean" Nullable="false" />
           <Property Name="processorTrxID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="sponsor" Relationship="Self.donation_ibfk_1" FromRole="donation" ToRole="sponsor" />
-        </EntityType>
-        <EntityType Name="sponsor">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="userID" Type="Int32" Nullable="false" />
-          <Property Name="participantID" Type="Int32" Nullable="false" />
-          <Property Name="payMethodToken" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="payMethodType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="pledgeAmount" Type="Decimal" />
-          <Property Name="pledgePerSteps" Type="Int32" />
-          <Property Name="donationMax" Type="Decimal" />
-          <NavigationProperty Name="donations" Relationship="Self.donation_ibfk_1" FromRole="sponsor" ToRole="donation" />
-          <NavigationProperty Name="user" Relationship="Self.sponsor_ibfk_1" FromRole="sponsor" ToRole="user" />
-          <NavigationProperty Name="participant" Relationship="FitathonDataModel.sponsor_ibfk_2" FromRole="sponsor" ToRole="participant" />
+          <NavigationProperty Name="sponsor" Relationship="FitathonDataModel.donation_ibfk_1" FromRole="donation" ToRole="sponsor" />
         </EntityType>
         <EntityType Name="user">
           <Key>
@@ -211,46 +196,13 @@
           <Property Name="email" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="passwordHash" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="passwordSalt" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="sponsors" Relationship="Self.sponsor_ibfk_1" FromRole="user" ToRole="sponsor" />
           <NavigationProperty Name="participants" Relationship="FitathonDataModel.participant_ibfk_1" FromRole="user" ToRole="participant" />
+          <NavigationProperty Name="sponsors" Relationship="FitathonDataModel.sponsor_ibfk_1" FromRole="user" ToRole="sponsor" />
         </EntityType>
-        <Association Name="donation_ibfk_1">
-          <End Role="sponsor" Type="Self.sponsor" Multiplicity="1" />
-          <End Role="donation" Type="Self.donation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="sponsor">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="donation">
-              <PropertyRef Name="sponsorID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="sponsor_ibfk_1">
-          <End Role="user" Type="Self.user" Multiplicity="1" />
-          <End Role="sponsor" Type="Self.sponsor" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="user">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="sponsor">
-              <PropertyRef Name="userID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="FitathonDataEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="appsettings" EntityType="Self.appsetting" />
           <EntitySet Name="donations" EntityType="Self.donation" />
-          <EntitySet Name="sponsors" EntityType="Self.sponsor" />
           <EntitySet Name="users" EntityType="Self.user" />
-          <AssociationSet Name="donation_ibfk_1" Association="Self.donation_ibfk_1">
-            <End Role="sponsor" EntitySet="sponsors" />
-            <End Role="donation" EntitySet="donations" />
-          </AssociationSet>
-          <AssociationSet Name="sponsor_ibfk_1" Association="Self.sponsor_ibfk_1">
-            <End Role="user" EntitySet="users" />
-            <End Role="sponsor" EntitySet="sponsors" />
-          </AssociationSet>
           <EntitySet Name="fitevents" EntityType="FitathonDataModel.fitevent" />
           <EntitySet Name="participants" EntityType="FitathonDataModel.participant" />
           <AssociationSet Name="participant_ibfk_2" Association="FitathonDataModel.participant_ibfk_2">
@@ -261,8 +213,17 @@
             <End Role="user" EntitySet="users" />
             <End Role="participant" EntitySet="participants" />
           </AssociationSet>
+          <EntitySet Name="sponsors" EntityType="FitathonDataModel.sponsor" />
+          <AssociationSet Name="donation_ibfk_1" Association="FitathonDataModel.donation_ibfk_1">
+            <End Role="sponsor" EntitySet="sponsors" />
+            <End Role="donation" EntitySet="donations" />
+          </AssociationSet>
           <AssociationSet Name="sponsor_ibfk_2" Association="FitathonDataModel.sponsor_ibfk_2">
             <End Role="participant" EntitySet="participants" />
+            <End Role="sponsor" EntitySet="sponsors" />
+          </AssociationSet>
+          <AssociationSet Name="sponsor_ibfk_1" Association="FitathonDataModel.sponsor_ibfk_1">
+            <End Role="user" EntitySet="users" />
             <End Role="sponsor" EntitySet="sponsors" />
           </AssociationSet>
         </EntityContainer>
@@ -323,6 +284,35 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="sponsor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userID" Type="Int32" Nullable="false" />
+          <Property Name="participantID" Type="Int32" Nullable="false" />
+          <Property Name="payMethodToken" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="payMethodCustomerId" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="payMethodType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="pledgeAmount" Type="Decimal" />
+          <Property Name="pledgePerSteps" Type="Int32" />
+          <Property Name="donationMax" Type="Decimal" />
+          <NavigationProperty Name="donations" Relationship="FitathonDataModel.donation_ibfk_1" FromRole="sponsor" ToRole="donation" />
+          <NavigationProperty Name="participant" Relationship="FitathonDataModel.sponsor_ibfk_2" FromRole="sponsor" ToRole="participant" />
+          <NavigationProperty Name="user" Relationship="FitathonDataModel.sponsor_ibfk_1" FromRole="sponsor" ToRole="user" />
+        </EntityType>
+        <Association Name="donation_ibfk_1">
+          <End Type="FitathonDataModel.sponsor" Role="sponsor" Multiplicity="1" />
+          <End Type="FitathonDataModel.donation" Role="donation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sponsor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="donation">
+              <PropertyRef Name="sponsorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="sponsor_ibfk_2">
           <End Type="FitathonDataModel.participant" Role="participant" Multiplicity="1" />
           <End Type="FitathonDataModel.sponsor" Role="sponsor" Multiplicity="*" />
@@ -332,6 +322,18 @@
             </Principal>
             <Dependent Role="sponsor">
               <PropertyRef Name="participantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="sponsor_ibfk_1">
+          <End Type="FitathonDataModel.user" Role="user" Multiplicity="1" />
+          <End Type="FitathonDataModel.sponsor" Role="sponsor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="sponsor">
+              <PropertyRef Name="userID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -358,20 +360,6 @@
                 <ScalarProperty Name="charged" ColumnName="charged" />
                 <ScalarProperty Name="success" ColumnName="success" />
                 <ScalarProperty Name="processorTrxID" ColumnName="processorTrxID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="sponsors">
-            <EntityTypeMapping TypeName="FitathonDataModel.sponsor">
-              <MappingFragment StoreEntitySet="sponsor">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="userID" ColumnName="userID" />
-                <ScalarProperty Name="participantID" ColumnName="participantID" />
-                <ScalarProperty Name="payMethodToken" ColumnName="payMethodToken" />
-                <ScalarProperty Name="payMethodType" ColumnName="payMethodType" />
-                <ScalarProperty Name="pledgeAmount" ColumnName="pledgeAmount" />
-                <ScalarProperty Name="pledgePerSteps" ColumnName="pledgePerSteps" />
-                <ScalarProperty Name="donationMax" ColumnName="donationMax" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -412,6 +400,21 @@
                 <ScalarProperty Name="averageDailySteps" ColumnName="averageDailySteps" />
                 <ScalarProperty Name="stepsTaken" ColumnName="stepsTaken" />
                 <ScalarProperty Name="eventID" ColumnName="eventID" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sponsors">
+            <EntityTypeMapping TypeName="FitathonDataModel.sponsor">
+              <MappingFragment StoreEntitySet="sponsor">
+                <ScalarProperty Name="donationMax" ColumnName="donationMax" />
+                <ScalarProperty Name="pledgePerSteps" ColumnName="pledgePerSteps" />
+                <ScalarProperty Name="pledgeAmount" ColumnName="pledgeAmount" />
+                <ScalarProperty Name="payMethodType" ColumnName="payMethodType" />
+                <ScalarProperty Name="payMethodCustomerId" ColumnName="payMethodCustomerId" />
+                <ScalarProperty Name="payMethodToken" ColumnName="payMethodToken" />
+                <ScalarProperty Name="participantID" ColumnName="participantID" />
                 <ScalarProperty Name="userID" ColumnName="userID" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>

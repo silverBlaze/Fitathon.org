@@ -23,13 +23,14 @@ namespace Fitathon.org.Data
         public int userID { get; set; }
         public int participantID { get; set; }
         public string payMethodToken { get; set; }
+        public string payMethodCustomerId { get; set; }
         public string payMethodType { get; set; }
         public Nullable<decimal> pledgeAmount { get; set; }
         public Nullable<int> pledgePerSteps { get; set; }
         public Nullable<decimal> donationMax { get; set; }
     
         public virtual ICollection<donation> donations { get; set; }
-        public virtual user user { get; set; }
         public virtual participant participant { get; set; }
+        public virtual user user { get; set; }
     }
 }
