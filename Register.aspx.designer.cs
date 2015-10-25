@@ -40,13 +40,13 @@ namespace Fitathon.org {
         protected global::System.Web.UI.WebControls.TextBox txtPassword;
         
         /// <summary>
-        /// phParticipant control.
+        /// btnSubmit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder phParticipant;
+        protected global::System.Web.UI.WebControls.Button btnSubmit;
         
         /// <summary>
         /// phSponsor control.
@@ -76,12 +76,12 @@ namespace Fitathon.org {
         protected global::System.Web.UI.WebControls.TextBox txtParticipantCode;
         
         /// <summary>
-        /// btnSubmit control.
+        /// phParticipant control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSubmit;
+        protected global::System.Web.UI.WebControls.PlaceHolder phParticipant;
     }
 }

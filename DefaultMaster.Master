@@ -4,14 +4,38 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title></title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet" />
+    
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
 <body>
-        <div>
+    <div class="site-wrapper">
+        <div class="site-wrapper-inner">
+
             <asp:ContentPlaceHolder ID="body" runat="server">
             </asp:ContentPlaceHolder>
+
+            <div class="mastfoot">
+                <div class="inner">
+                    <p>Fitathon.org, by <a href="https://wells.solutions">wells.solutions</a>.</p>
+                </div>
+            </div>
+
         </div>
+
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
 </body>
 </html>

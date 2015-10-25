@@ -19,7 +19,7 @@ namespace Fitathon.org {
 
             decimal.TryParse(txtPledge.Text, out amount);
             decimal.TryParse(txtMaxDonation.Text, out max);
-            int.TryParse(ddlPerSteps.SelectedValue, out perSteps);
+            int.TryParse(txtPerSteps.Text, out perSteps);
 
             try {
                 using(var ctx = new Data.FitathonDataEntities()) {

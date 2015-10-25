@@ -22,13 +22,13 @@ namespace Fitathon.org {
         protected global::System.Web.UI.WebControls.TextBox txtPledge;
         
         /// <summary>
-        /// ddlPerSteps control.
+        /// txtPerSteps control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlPerSteps;
+        protected global::System.Web.UI.WebControls.TextBox txtPerSteps;
         
         /// <summary>
         /// txtMaxDonation control.

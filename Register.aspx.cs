@@ -16,8 +16,9 @@ namespace Fitathon.org {
                     txtParticipantCode.Text = Request.QueryString["code"];
                     divEventCode.Style["display"] = "none";
                 } else {
-                    Response.Redirect("~", false);
-                    return;
+                    Session["role"] = "solowalker";
+                    //Response.Redirect("~", false);
+                    //return;
                 }
             }
             if(Session["role"] != null && !string.IsNullOrEmpty(Session["role"].ToString())) {

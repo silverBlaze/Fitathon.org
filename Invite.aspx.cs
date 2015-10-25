@@ -28,14 +28,13 @@ namespace Fitathon.org {
                 var emails = txtInvite.Text.Split(new char[] { ',', '\n', '\r' });
                 foreach(var em in emails) {
                     try {
-                        Common.SendEmail("Fitathon.org@fitathon.org", em, string.Format("Fitathon.org: {0} wants to invite you!", user.name), string.Format(
+                        Common.SendEmail("Fitathon.org@fitathon.org", em.Trim(), string.Format("Fitathon.org: {0} wants to invite you!", user.name), string.Format(
                             @"<p>You have been invited by {0} to sponsor them in a Fitathon event.</p>
                             <p>Fitathon.org is a digital walkathon platform, which enables people to raise funds by asking people like you to sponsor them. <a href='{1}'>Click here</a> to learn more</p>
                             <p><a href='{2}'>Sponsor {0}</a></p>", user.name, LEARN_MORE_URL, string.Format(SPONSOR_URL_FMT, part.uniqueID)));
                         } catch { }
                 }
-
-
+                
                 Response.Redirect("ViewEvent.aspx", false);
             }
         }

@@ -1,0 +1,64 @@
+﻿.form-register-user, .form-register-event, .form-register-processor, .form-register-fitbit, .form-register-invite, .form-register-pledge, .form-register-proc {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+
+    .form-register-user .form-register-heading,
+    .form-register-user .checkbox {
+        margin-bottom: 10px;
+    }
+
+    .form-register-user .checkbox {
+        font-weight: normal;
+    }
+
+
+.form-control {
+    position: relative;
+    height: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+}
+.form-register-proc .jumbotron {
+    background-color: #fff;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.form-register-user .form-control:focus {
+    z-index: 2;
+}
+
+.form-register-user .reg-name, .form-register-event .reg-name, .form-register-processor .reg-merch, .form-register-pledge .reg-pledge {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-register-user .reg-email, .form-register-user .reg-pwd,
+.form-register-event .reg-begins, .form-register-event .reg-ends,
+.form-register-event .reg-steps, .form-register-processor .reg-public, .form-register-pledge .reg-steps {
+    margin-bottom: -1px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-register-user .reg-pwd2, .form-register-event .reg-goal, .form-register-processor .reg-private, .form-register-pledge .reg-max {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.form-register-invite .reg-emails {
+    margin-bottom: 10px;
+}
+
+.undr {
+    text-decoration:underline;
+}

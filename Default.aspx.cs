@@ -13,5 +13,9 @@ namespace Fitathon.org {
             Session.Clear();
             Session.Abandon();
         }
+
+        protected void btnLearnMore_Click(object sender, EventArgs e) {
+            Response.Redirect("About.aspx", false);
+        }
     }
 }
